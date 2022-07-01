@@ -23,6 +23,9 @@ class MainWindow : public QMainWindow {
 
  private slots:
   void onAddButtonClicked();
+  void onRemoveButtonClicked();
+  void onEditButtonClicked();
+  void onCopyButtonClicked();
 
  private:
   Ui::MainWindow* ui;

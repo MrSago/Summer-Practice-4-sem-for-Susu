@@ -25,6 +25,9 @@ set(PROJECT_SOURCES
         additemdialog.h
         additemdialog.cpp
         additemdialog.ui
+        edititemdialog.h
+        edititemdialog.cpp
+        edititemdialog.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

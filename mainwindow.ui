@@ -25,6 +25,10 @@
   <property name="windowTitle">
    <string>Крылатые фразы</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/Resources/window-icon.png</normaloff>:/Resources/window-icon.png</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTableView" name="mainTableView">
     <property name="geometry">
@@ -137,6 +141,16 @@
        <height>32</height>
       </rect>
      </property>
+     <property name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/Resources/add-square.png</normaloff>:/Resources/add-square.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>26</width>
+       <height>26</height>
+      </size>
+     </property>
     </widget>
     <widget class="QPushButton" name="removeButton">
      <property name="geometry">
@@ -146,6 +160,16 @@
        <width>32</width>
        <height>32</height>
       </rect>
+     </property>
+     <property name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/Resources/rubbish-bin.png</normaloff>:/Resources/rubbish-bin.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>26</width>
+       <height>26</height>
+      </size>
      </property>
     </widget>
     <widget class="QPushButton" name="editButton">
@@ -157,6 +181,16 @@
        <height>32</height>
       </rect>
      </property>
+     <property name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/Resources/edit.png</normaloff>:/Resources/edit.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>26</width>
+       <height>26</height>
+      </size>
+     </property>
     </widget>
     <widget class="QPushButton" name="copyButton">
      <property name="geometry">
@@ -166,6 +200,16 @@
        <width>32</width>
        <height>32</height>
       </rect>
+     </property>
+     <property name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/Resources/copy.png</normaloff>:/Resources/copy.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>36</width>
+       <height>36</height>
+      </size>
      </property>
     </widget>
    </widget>
@@ -223,5 +267,8 @@
    </property>
   </action>
  </widget>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

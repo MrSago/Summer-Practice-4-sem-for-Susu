@@ -6,10 +6,10 @@ AddItemDialog::AddItemDialog(QWidget *parent)
     : QDialog(parent), ui(new Ui::AddItemDialog) {
   ui->setupUi(this);
 
-  //  connect(ui->addButton, &QAbstractButton::clicked, this,
-  //          &AddItemDialog::accept);
-  //  connect(ui->cancelButton, &QAbstractButton::clicked, this,
-  //          &AddItemDialog::reject);
+  connect(ui->acceptButton, &QAbstractButton::clicked, this,
+          &AddItemDialog::accept);
+  connect(ui->cancelButton, &QAbstractButton::clicked, this,
+          &AddItemDialog::reject);
 }
 
 AddItemDialog::~AddItemDialog() { delete ui; }

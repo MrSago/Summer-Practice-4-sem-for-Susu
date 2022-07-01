@@ -6,6 +6,8 @@
 #include <QMainWindow>
 #include <QStringListModel>
 
+#include "tabledata.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -19,7 +21,11 @@ class MainWindow : public QMainWindow {
   MainWindow(QWidget* parent = nullptr);
   ~MainWindow();
 
+ private slots:
+  void onAddButtonClicked();
+
  private:
   Ui::MainWindow* ui;
+  TableData tableData;
 };
 #endif  // MAINWINDOW_H

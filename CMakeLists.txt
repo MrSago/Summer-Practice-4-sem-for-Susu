@@ -19,6 +19,12 @@ set(PROJECT_SOURCES
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+        resources.qrc
+        tabledata.h
+        tabledata.cpp
+        additemdialog.h
+        additemdialog.cpp
+        additemdialog.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

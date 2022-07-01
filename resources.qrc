@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Resources/copy.png</file>
+        <file>Resources/edit.png</file>
+        <file>Resources/save.png</file>
+        <file>Resources/search.png</file>
+        <file>Resources/add-square.png</file>
+        <file>Resources/rubbish-bin.png</file>
+        <file>Resources/window-icon.png</file>
+    </qresource>
+</RCC>

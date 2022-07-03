@@ -18,7 +18,10 @@ class EditItemDialog : public QDialog {
   QString getPhrase();
 
  private:
-  Ui::EditItemDialog* ui;
+  Ui::EditItemDialog* ui_;
+
+  void connectButtons();
+  void setEditTexts(QVector<QString>& items);
 };
 
 #endif  // EDITITEMDIALOG_H

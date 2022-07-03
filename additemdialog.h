@@ -18,7 +18,9 @@ class AddItemDialog : public QDialog {
   QString getPhrase();
 
  private:
-  Ui::AddItemDialog* ui;
+  Ui::AddItemDialog* ui_;
+
+  void connectButtons();
 };
 
 #endif  // ADDITEMDIALOG_H

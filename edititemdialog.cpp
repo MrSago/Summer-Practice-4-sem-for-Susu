@@ -3,25 +3,31 @@
 #include "ui_edititemdialog.h"
 
 EditItemDialog::EditItemDialog(QVector<QString>& items, QWidget* parent)
-    : QDialog(parent), ui(new Ui::EditItemDialog) {
-  ui->setupUi(this);
-
-  connect(ui->acceptButton, &QAbstractButton::clicked, this,
-          &EditItemDialog::accept);
-  connect(ui->cancelButton, &QAbstractButton::clicked, this,
-          &EditItemDialog::reject);
-
-  ui->authorLineEdit->setText(items[0]);
-  ui->themeLineEdit->setText(items[1]);
-  ui->phraseTextEdit->setText(items[2]);
+    : QDialog(parent), ui_(new Ui::EditItemDialog) {
+  ui_->setupUi(this);
+  connectButtons();
+  setEditTexts(items);
 }
 
-EditItemDialog::~EditItemDialog() { delete ui; }
+EditItemDialog::~EditItemDialog() { delete ui_; }
 
-QString EditItemDialog::getAuthor() { return ui->authorLineEdit->text(); }
+QString EditItemDialog::getAuthor() { return ui_->authorLineEdit->text(); }
 
-QString EditItemDialog::getTheme() { return ui->themeLineEdit->text(); }
+QString EditItemDialog::getTheme() { return ui_->themeLineEdit->text(); }
 
 QString EditItemDialog::getPhrase() {
-  return ui->phraseTextEdit->toPlainText();
+  return ui_->phraseTextEdit->toPlainText();
+}
+
+void EditItemDialog::connectButtons() {
+  connect(ui_->acceptButton, &QAbstractButton::clicked, this,
+          &EditItemDialog::accept);
+  connect(ui_->cancelButton, &QAbstractButton::clicked, this,
+          &EditItemDialog::reject);
+}
+
+void EditItemDialog::setEditTexts(QVector<QString>& items) {
+  ui_->authorLineEdit->setText(items[0]);
+  ui_->themeLineEdit->setText(items[1]);
+  ui_->phraseTextEdit->setText(items[2]);
 }

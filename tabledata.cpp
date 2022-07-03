@@ -1,53 +1,56 @@
+
 #include "tabledata.h"
 
-TableData::TableData() : _model(new QStandardItemModel(0, 3)) {
-  _model->setHeaderData(0, Qt::Horizontal, QString("Автор"));
-  _model->setHeaderData(1, Qt::Horizontal, QString("Тема"));
-  _model->setHeaderData(2, Qt::Horizontal, QString("Фраза"));
+#include <QStandardItemModel>
 
-  int rows = 5;
-  _model->insertRows(_model->rowCount(), rows);
-  for (int i = 0; i < rows; ++i) {
-    _model->setData(_model->index(i, 0), "Автор");
-    _model->setData(_model->index(i, 1), "жошшшш");
-    _model->setData(_model->index(i, 2), "По факту кста внатуре");
+TableData::TableData(const QVector<QString>& column_headers)
+    : model_(new QStandardItemModel(0, column_headers.size())),
+      sourceModel_(model_) {
+  for (int i = 0; i < column_headers.size(); ++i) {
+    model_->setHeaderData(i, Qt::Horizontal, column_headers[i]);
   }
 }
 
-QAbstractItemModel* TableData::getModel() { return _model; }
+TableData::~TableData() {
+  if (model_ != sourceModel_) {
+    delete model_;
+  }
+  delete sourceModel_;
+}
 
 void TableData::addRow(QVector<QString>& columns) {
-  if (columns.size() > _model->columnCount()) {
+  if (columns.size() > model_->columnCount()) {
     return;
   }
 
-  int row_count = _model->rowCount();
-  _model->insertRow(row_count);
-
+  int row_count = model_->rowCount();
+  model_->insertRow(row_count);
   for (int i = 0; i < columns.size(); ++i) {
-    QModelIndex index = _model->index(row_count, i);
-    _model->setData(index, columns[i]);
+    QModelIndex index = model_->index(row_count, i);
+    model_->setData(index, columns[i]);
   }
 }
 
-bool TableData::removeRow(int row) { return _model->removeRow(row); }
+bool TableData::removeRow(int row) { return model_->removeRow(row); }
 
 QVector<QString> TableData::getRowData(int row) {
-  QVector<QString> data(_model->columnCount());
+  QVector<QString> data(model_->columnCount());
   for (int i = 0; i < data.size(); ++i) {
-    QModelIndex index = _model->index(row, i);
-    data[i] = _model->data(index).toString();
+    QModelIndex index = model_->index(row, i);
+    data[i] = model_->data(index).toString();
   }
   return data;
 }
 
-void TableData::changeRow(QVector<QString>& columns, int row) {
-  if (columns.size() > _model->columnCount()) {
+void TableData::editRow(QVector<QString>& columns, int row) {
+  if (columns.size() > model_->columnCount()) {
     return;
   }
 
   for (int i = 0; i < columns.size(); ++i) {
-    QModelIndex index = _model->index(row, i);
-    _model->setData(index, columns[i]);
+    QModelIndex index = model_->index(row, i);
+    model_->setData(index, columns[i]);
   }
 }
+
+void TableData::resetModel() { model_ = sourceModel_; }

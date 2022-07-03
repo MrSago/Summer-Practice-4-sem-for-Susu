@@ -39,12 +39,6 @@
       <height>401</height>
      </rect>
     </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
     <property name="editTriggers">
      <set>QAbstractItemView::NoEditTriggers</set>
     </property>
@@ -56,6 +50,12 @@
     </property>
     <property name="selectionBehavior">
      <enum>QAbstractItemView::SelectRows</enum>
+    </property>
+    <property name="verticalScrollMode">
+     <enum>QAbstractItemView::ScrollPerPixel</enum>
+    </property>
+    <property name="horizontalScrollMode">
+     <enum>QAbstractItemView::ScrollPerPixel</enum>
     </property>
    </widget>
    <widget class="QFrame" name="searchFrame">
@@ -223,23 +223,14 @@
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu">
+   <widget class="QMenu" name="mainMenu">
     <property name="title">
-     <string> Меню</string>
-    </property>
-    <addaction name="actionOpenFile"/>
-    <addaction name="actionSaveFile"/>
-    <addaction name="actionSaveAsFile"/>
-   </widget>
-   <widget class="QMenu" name="help">
-    <property name="title">
-     <string>Помощь</string>
+     <string>Меню</string>
     </property>
     <addaction name="actionTutorial"/>
     <addaction name="actionAbout"/>
    </widget>
-   <addaction name="menu"/>
-   <addaction name="help"/>
+   <addaction name="mainMenu"/>
   </widget>
   <action name="actionOpenFile">
    <property name="text">

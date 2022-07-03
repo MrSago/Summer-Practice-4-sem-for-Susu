@@ -3,19 +3,24 @@
 #include "ui_additemdialog.h"
 
 AddItemDialog::AddItemDialog(QWidget *parent)
-    : QDialog(parent), ui(new Ui::AddItemDialog) {
-  ui->setupUi(this);
-
-  connect(ui->acceptButton, &QAbstractButton::clicked, this,
-          &AddItemDialog::accept);
-  connect(ui->cancelButton, &QAbstractButton::clicked, this,
-          &AddItemDialog::reject);
+    : QDialog(parent), ui_(new Ui::AddItemDialog) {
+  ui_->setupUi(this);
+  connectButtons();
 }
 
-AddItemDialog::~AddItemDialog() { delete ui; }
+AddItemDialog::~AddItemDialog() { delete ui_; }
 
-QString AddItemDialog::getAuthor() { return ui->authorLineEdit->text(); }
+QString AddItemDialog::getAuthor() { return ui_->authorLineEdit->text(); }
 
-QString AddItemDialog::getTheme() { return ui->themeLineEdit->text(); }
+QString AddItemDialog::getTheme() { return ui_->themeLineEdit->text(); }
 
-QString AddItemDialog::getPhrase() { return ui->phraseTextEdit->toPlainText(); }
+QString AddItemDialog::getPhrase() {
+  return ui_->phraseTextEdit->toPlainText();
+}
+
+void AddItemDialog::connectButtons() {
+  connect(ui_->acceptButton, &QAbstractButton::clicked, this,
+          &AddItemDialog::accept);
+  connect(ui_->cancelButton, &QAbstractButton::clicked, this,
+          &AddItemDialog::reject);
+}

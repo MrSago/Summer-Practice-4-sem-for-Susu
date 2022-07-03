@@ -1,10 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QAbstractItemModel>
-#include <QListView>
+#include <QCompleter>
 #include <QMainWindow>
-#include <QStringListModel>
 
 #include "tabledata.h"
 
@@ -26,9 +24,15 @@ class MainWindow : public QMainWindow {
   void onRemoveButtonClicked();
   void onEditButtonClicked();
   void onCopyButtonClicked();
+  void onSearchButtonClicked();
 
  private:
-  Ui::MainWindow* ui;
-  TableData tableData;
+  Ui::MainWindow* ui_;
+  TableData* tableData_;
+
+  void connectButtons();
+  void setupTable();
+
+  void buttonMessageBox(const QString& reason);
 };
 #endif  // MAINWINDOW_H

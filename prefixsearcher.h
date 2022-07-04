@@ -17,7 +17,7 @@ class PrefixSearcher {
   PrefixSearcher() : countNodes_(1), countStrings_(0) {}
   int getCountStrings() { return countStrings_; }
   void insert(QString& str, void* input_data);
-  void erase(QString& value);
+  void erase(QString& str);
   QVector<void*> find(QString& prefix);
 
  private:

@@ -16,6 +16,17 @@ TableData::~TableData() {
     delete model_;
   }
   delete sourceModel_;
+  for (PrefixSearcher* i : criterionSearch_) {
+    delete i;
+  }
+}
+
+void TableData::setSearchCriterionColumns(const QVector<int>& criterions) {
+  for (const int& i : criterions) {
+    if (i >= 0 && i < model_->columnCount()) {
+      criterionSearch_[i] = new PrefixSearcher;
+    }
+  }
 }
 
 void TableData::addRow(QVector<QString>& columns) {

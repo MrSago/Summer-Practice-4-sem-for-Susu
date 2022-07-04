@@ -11,6 +11,7 @@ class TableData {
   TableData(const QVector<QString>& column_headers);
   ~TableData();
   QAbstractItemModel* getModel() { return model_; }
+  void setSearchCriterionColumns(const QVector<int>& criterions);
   void addRow(QVector<QString>& columns);
   bool removeRow(int row);
   QVector<QString> getRowData(int row);
@@ -20,8 +21,7 @@ class TableData {
  private:
   QAbstractItemModel* model_;
   QAbstractItemModel* const sourceModel_;
-  PrefixSearcher author_;
-  PrefixSearcher theme_;
+  QMap<int, PrefixSearcher*> criterionSearch_;
 };
 
 #endif  // TABLEMODEL_H

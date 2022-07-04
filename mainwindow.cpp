@@ -110,6 +110,8 @@ void MainWindow::connectButtons() {
 
 void MainWindow::setupTable() {
   tableData_ = new TableData(QVector<QString>{"Автор", "Тема", "Фраза"});
+  tableData_->setSearchCriterionColumns(QVector<int>{0, 1});
+
   ui_->mainTableView->horizontalHeader()->setSectionResizeMode(
       QHeaderView::ResizeToContents);
   ui_->mainTableView->verticalHeader()->setSectionResizeMode(

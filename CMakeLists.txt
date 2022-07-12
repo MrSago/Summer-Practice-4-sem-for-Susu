@@ -30,6 +30,12 @@ set(PROJECT_SOURCES
         edititemdialog.ui
         prefixsearcher.h
         prefixsearcher.cpp
+        helpwindow.h
+        helpwindow.cpp
+        helpwindow.ui
+        aboutwindow.h
+        aboutwindow.cpp
+        aboutwindow.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

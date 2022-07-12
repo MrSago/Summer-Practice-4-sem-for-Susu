@@ -24,14 +24,25 @@ class MainWindow : public QMainWindow {
   void onRemoveButtonClicked();
   void onEditButtonClicked();
   void onCopyButtonClicked();
+  void onClearButtonClicked();
   void onSearchButtonClicked();
+
+  void onSaveFileClicked();
+  void onLoadFileClicked();
+
+  void onHelpActionClicked();
+  void onAboutActionClicked();
+
+  void onCriterionComboBoxActivated(int index);
 
  private:
   Ui::MainWindow* ui_;
   TableData* tableData_;
+  QCompleter* compl_;
 
-  void connectButtons();
+  void connectActions();
   void setupTable();
+  void initCompleter();
 
   void buttonMessageBox(const QString& reason);
 };

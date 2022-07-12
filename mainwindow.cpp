@@ -1,18 +1,22 @@
 #include "mainwindow.h"
 
 #include <QClipboard>
+#include <QFileDialog>
 #include <QMessageBox>
 #include <QStatusBar>
 
+#include "aboutwindow.h"
 #include "additemdialog.h"
 #include "edititemdialog.h"
+#include "helpwindow.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui_(new Ui::MainWindow) {
   ui_->setupUi(this);
-  connectButtons();
+  connectActions();
   setupTable();
+  initCompleter();
   statusBar()->showMessage("Готов");
 }
 
@@ -29,8 +33,8 @@ void MainWindow::onAddButtonClicked() {
     QVector<QString> data = {dialog.getAuthor(), dialog.getTheme(),
                              dialog.getPhrase()};
     tableData_->addRow(data);
+    statusBar()->showMessage("Запись успешно добавлена в таблицу");
   }
-  statusBar()->showMessage("Запись успешно добавлена в таблицу");
 }
 
 void MainWindow::onRemoveButtonClicked() {
@@ -63,8 +67,8 @@ void MainWindow::onEditButtonClicked() {
     QVector<QString> data = {dialog.getAuthor(), dialog.getTheme(),
                              dialog.getPhrase()};
     tableData_->editRow(data, row);
+    statusBar()->showMessage("Запись в таблице успешно изменена");
   }
-  statusBar()->showMessage("Запись в таблице успешно изменена");
 }
 
 void MainWindow::onCopyButtonClicked() {
@@ -77,13 +81,23 @@ void MainWindow::onCopyButtonClicked() {
 
   int row = selected_rows.first().row();
   QVector<QString> data = tableData_->getRowData(row);
-  QString result = "";
-  for (auto& it : data) {
-    result += it + '\t';
+  QString result = data[0];
+  for (int i = 1; i < data.size(); ++i) {
+    result += '\t' + data[i];
   }
 
   QApplication::clipboard()->setText(result);
   statusBar()->showMessage("Строка скопирована");
+}
+
+void MainWindow::onClearButtonClicked() {
+  QAbstractItemModel* model = tableData_->resetModel();
+  if (model) {
+    ui_->mainTableView->setModel(model);
+    statusBar()->showMessage("Таблица успешно очищена");
+  } else {
+    statusBar()->showMessage("Ошибка очистки таблицы");
+  }
 }
 
 void MainWindow::onSearchButtonClicked() {
@@ -95,7 +109,52 @@ void MainWindow::onSearchButtonClicked() {
   qDebug("%d : %s\n", search_index, search_string.toStdString().c_str());
 }
 
-void MainWindow::connectButtons() {
+void MainWindow::onSaveFileClicked() {
+  QString path = QFileDialog::getSaveFileName(this, "Сохранить файл", "",
+                                              "Фразы (*.json)");
+  if (path.isNull() || path.isEmpty()) {
+    return;
+  }
+
+  if (tableData_->saveToJson(path)) {
+    statusBar()->showMessage("Файл успешно сохранен");
+  } else {
+    statusBar()->showMessage("Ошибка сохранения файла");
+  }
+}
+
+void MainWindow::onLoadFileClicked() {
+  QString path = QFileDialog::getOpenFileName(this, "Загрузить файл", "",
+                                              "Фразы (*.json)");
+  if (path.isNull() || path.isEmpty()) {
+    return;
+  }
+
+  QAbstractItemModel* model = tableData_->loadFromJson(path);
+  if (model) {
+    ui_->mainTableView->setModel(model);
+    compl_->setModel(model);
+    statusBar()->showMessage("Файл успешно загружен");
+  } else {
+    statusBar()->showMessage("Ошибка загрузки файла");
+  }
+}
+
+void MainWindow::onHelpActionClicked() {
+  HelpWindow wnd(this);
+  wnd.exec();
+}
+
+void MainWindow::onAboutActionClicked() {
+  AboutWindow wnd(this);
+  wnd.exec();
+}
+
+void MainWindow::onCriterionComboBoxActivated(int index) {
+  compl_->setCompletionColumn(index + 1);
+}
+
+void MainWindow::connectActions() {
   connect(ui_->addButton, &QAbstractButton::clicked, this,
           &MainWindow::onAddButtonClicked);
   connect(ui_->removeButton, &QAbstractButton::clicked, this,
@@ -104,19 +163,38 @@ void MainWindow::connectButtons() {
           &MainWindow::onEditButtonClicked);
   connect(ui_->copyButton, &QAbstractButton::clicked, this,
           &MainWindow::onCopyButtonClicked);
+  connect(ui_->clearButton, &QAbstractButton::clicked, this,
+          &MainWindow::onClearButtonClicked);
   connect(ui_->searchButton, &QAbstractButton::clicked, this,
           &MainWindow::onSearchButtonClicked);
+
+  connect(ui_->actionSave, &QAction::triggered, this,
+          &MainWindow::onSaveFileClicked);
+  connect(ui_->actionLoad, &QAction::triggered, this,
+          &MainWindow::onLoadFileClicked);
+
+  connect(ui_->actionHelp, &QAction::triggered, this,
+          &MainWindow::onHelpActionClicked);
+  connect(ui_->actionAbout, &QAction::triggered, this,
+          &MainWindow::onAboutActionClicked);
+
+  connect(ui_->criterionComboBox, &QComboBox::activated, this,
+          &MainWindow::onCriterionComboBoxActivated);
 }
 
 void MainWindow::setupTable() {
-  tableData_ = new TableData(QVector<QString>{"Автор", "Тема", "Фраза"});
-  tableData_->setSearchCriterionColumns(QVector<int>{0, 1});
-
+  tableData_ = new TableData(QVector<QString>{"Автор", "Тема", "Фраза"},
+                             QVector<int>{1, 2});
   ui_->mainTableView->horizontalHeader()->setSectionResizeMode(
       QHeaderView::ResizeToContents);
-  ui_->mainTableView->verticalHeader()->setSectionResizeMode(
-      QHeaderView::ResizeToContents);
+  ui_->mainTableView->verticalHeader()->hide();
   ui_->mainTableView->setModel(tableData_->getModel());
+}
+
+void MainWindow::initCompleter() {
+  compl_ = new QCompleter(tableData_->getModel(), this);
+  compl_->setCompletionColumn(1);
+  ui_->searchLineEdit->setCompleter(compl_);
 }
 
 void MainWindow::buttonMessageBox(const QString& text) {

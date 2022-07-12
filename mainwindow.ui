@@ -123,7 +123,7 @@
       <x>0</x>
       <y>40</y>
       <width>51</width>
-      <height>151</height>
+      <height>191</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -212,6 +212,29 @@
       </size>
      </property>
     </widget>
+    <widget class="QPushButton" name="clearButton">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>160</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/Resources/clear-icon.jpg</normaloff>:/Resources/clear-icon.jpg</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>26</width>
+       <height>26</height>
+      </size>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -223,21 +246,29 @@
      <height>21</height>
     </rect>
    </property>
-   <widget class="QMenu" name="mainMenu">
+   <widget class="QMenu" name="helpMenu">
     <property name="title">
-     <string>Меню</string>
+     <string>Помощь</string>
     </property>
-    <addaction name="actionTutorial"/>
+    <addaction name="actionHelp"/>
     <addaction name="actionAbout"/>
    </widget>
-   <addaction name="mainMenu"/>
+   <widget class="QMenu" name="fileMenu">
+    <property name="title">
+     <string>Файл</string>
+    </property>
+    <addaction name="actionSave"/>
+    <addaction name="actionLoad"/>
+   </widget>
+   <addaction name="fileMenu"/>
+   <addaction name="helpMenu"/>
   </widget>
   <action name="actionOpenFile">
    <property name="text">
     <string>Открыть файл</string>
    </property>
   </action>
-  <action name="actionTutorial">
+  <action name="actionHelp">
    <property name="text">
     <string>Элементы управления</string>
    </property>
@@ -255,6 +286,16 @@
   <action name="actionSaveAsFile">
    <property name="text">
     <string>Сохранить файл как</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Сохранить файл</string>
+   </property>
+  </action>
+  <action name="actionLoad">
+   <property name="text">
+    <string>Загрузить файл</string>
    </property>
   </action>
  </widget>

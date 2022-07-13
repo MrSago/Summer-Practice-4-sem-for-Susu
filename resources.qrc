@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Resources/add-square-icon.png</file>
+        <file>Resources/clear-icon.jpg</file>
+        <file>Resources/copy-icon.png</file>
+        <file>Resources/edit-icon.png</file>
+        <file>Resources/help-icon.png</file>
+        <file>Resources/refresh-icon.png</file>
+        <file>Resources/rubbish-bin-icon.png</file>
+        <file>Resources/window-icon.png</file>
+    </qresource>
+</RCC>

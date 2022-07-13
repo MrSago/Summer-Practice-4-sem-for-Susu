@@ -1,7 +1,7 @@
 
 #include "prefixsearcher.h"
 
-void PrefixSearcher::insert(QString& str, void* input_data) {
+void PrefixSearcher::insert(const QString& str, int input_id) {
   int vertice = 0;
   for (QChar sym : str) {
     sym = sym.toLower();
@@ -10,10 +10,11 @@ void PrefixSearcher::insert(QString& str, void* input_data) {
     }
     vertice = getNextVertice(vertice, sym);
   }
-  trie_[vertice].data = input_data;
+  trie_[vertice].isLeaf = true;
+  trie_[vertice].ids.push_back(input_id);
 }
 
-void PrefixSearcher::erase(QString& str) {
+void PrefixSearcher::erase(const QString& str, int erase_id) {
   int vertice = 0;
   for (QChar sym : str) {
     if (!canGoNode(vertice, sym)) {
@@ -21,19 +22,25 @@ void PrefixSearcher::erase(QString& str) {
     }
     vertice = getNextVertice(vertice, sym);
   }
-  trie_[vertice].isLeaf = false;
-  trie_[vertice].data = nullptr;
+
+  Node& node = trie_[vertice];
+  auto it = std::find(node.ids.begin(), node.ids.end(), erase_id);
+  if (it != node.ids.end()) {
+    node.ids.erase(it);
+  }
+  node.isLeaf = node.ids.size();
 }
 
-QVector<void*> PrefixSearcher::find(QString& prefix) {
+QVector<int> PrefixSearcher::find(const QString& prefix) {
   int vertice = 0;
   for (QChar sym : prefix) {
     sym = sym.toLower();
     if (!canGoNode(vertice, sym)) {
-      return QVector<void*>();
+      return QVector<int>();
     }
+    vertice = getNextVertice(vertice, sym);
   }
-  QVector<void*> result;
+  QVector<int> result;
   depthFirstSearch(result, vertice);
   return result;
 }
@@ -52,9 +59,11 @@ int PrefixSearcher::getNextVertice(int vertice, QChar sym) {
 
 bool PrefixSearcher::isLeaf(int vertice) { return trie_[vertice].isLeaf; }
 
-void PrefixSearcher::depthFirstSearch(QVector<void*>& result, int vertice) {
+void PrefixSearcher::depthFirstSearch(QVector<int>& result, int vertice) {
   if (isLeaf(vertice)) {
-    result.push_back(trie_[vertice].data);
+    for (int id : trie_[vertice].ids) {
+      result.push_back(id);
+    }
   }
   QList vertices = trie_[vertice].nextNodes.values();
   for (int& next_vertice : vertices) {

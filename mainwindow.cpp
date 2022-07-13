@@ -23,6 +23,18 @@ MainWindow::MainWindow(QWidget* parent)
 MainWindow::~MainWindow() {
   delete ui_;
   delete tableData_;
+  delete compl_;
+}
+
+void MainWindow::onRefreshButtonClicked() {
+  QAbstractItemModel* ui_model = ui_->mainTableView->model();
+  if (ui_model != tableData_->getModel() && ui_model != nullptr) {
+    delete ui_model;
+  }
+  ui_->mainTableView->setModel(tableData_->getModel());
+  ui_->criterionComboBox->setCurrentIndex(0);
+  ui_->searchLineEdit->clear();
+  statusBar()->showMessage("Таблица обновлена");
 }
 
 void MainWindow::onAddButtonClicked() {
@@ -33,6 +45,7 @@ void MainWindow::onAddButtonClicked() {
     QVector<QString> data = {dialog.getAuthor(), dialog.getTheme(),
                              dialog.getPhrase()};
     tableData_->addRow(data);
+    onSearchButtonClicked();
     statusBar()->showMessage("Запись успешно добавлена в таблицу");
   }
 }
@@ -45,8 +58,9 @@ void MainWindow::onRemoveButtonClicked() {
     return;
   }
 
-  int row = selected_rows.first().row();
-  tableData_->removeRow(row);
+  int id = selected_rows.first().data().toInt();
+  tableData_->removeRow(id);
+  onSearchButtonClicked();
   statusBar()->showMessage("Запись успешно удалена");
 }
 
@@ -58,15 +72,16 @@ void MainWindow::onEditButtonClicked() {
     return;
   }
 
-  int row = selected_rows.first().row();
-  QVector<QString> data = tableData_->getRowData(row);
+  int id = selected_rows.first().data().toInt();
+  QVector<QString> data = tableData_->getRowData(id);
   EditItemDialog dialog(data, this);
   dialog.exec();
 
   if (dialog.result() == QDialog::Accepted) {
     QVector<QString> data = {dialog.getAuthor(), dialog.getTheme(),
                              dialog.getPhrase()};
-    tableData_->editRow(data, row);
+    tableData_->editRow(data, id);
+    onSearchButtonClicked();
     statusBar()->showMessage("Запись в таблице успешно изменена");
   }
 }
@@ -79,10 +94,10 @@ void MainWindow::onCopyButtonClicked() {
     return;
   }
 
-  int row = selected_rows.first().row();
-  QVector<QString> data = tableData_->getRowData(row);
-  QString result = data[0];
-  for (int i = 1; i < data.size(); ++i) {
+  int id = selected_rows.first().data().toInt();
+  QVector<QString> data = tableData_->getRowData(id);
+  QString result = data[1];
+  for (int i = 2; i < data.size(); ++i) {
     result += '\t' + data[i];
   }
 
@@ -91,8 +106,12 @@ void MainWindow::onCopyButtonClicked() {
 }
 
 void MainWindow::onClearButtonClicked() {
-  QAbstractItemModel* model = tableData_->resetModel();
+  QAbstractItemModel* model = tableData_->clearModel();
   if (model) {
+    QAbstractItemModel* ui_model = ui_->mainTableView->model();
+    if (ui_model != nullptr) {
+      delete ui_model;
+    }
     ui_->mainTableView->setModel(model);
     statusBar()->showMessage("Таблица успешно очищена");
   } else {
@@ -101,12 +120,20 @@ void MainWindow::onClearButtonClicked() {
 }
 
 void MainWindow::onSearchButtonClicked() {
-  int search_index = ui_->criterionComboBox->currentIndex();
+  QAbstractItemModel* ui_model = ui_->mainTableView->model();
+  if (ui_model != tableData_->getModel() && ui_model != nullptr) {
+    delete ui_model;
+  }
+
+  QString criterion = ui_->criterionComboBox->currentText();
   QString search_string = ui_->searchLineEdit->text();
   if (search_string.isNull() || search_string.isEmpty()) {
+    ui_->mainTableView->setModel(tableData_->getModel());
     return;
   }
-  qDebug("%d : %s\n", search_index, search_string.toStdString().c_str());
+
+  QAbstractItemModel* model = tableData_->search(criterion, search_string);
+  ui_->mainTableView->setModel(model);
 }
 
 void MainWindow::onSaveFileClicked() {
@@ -155,6 +182,8 @@ void MainWindow::onCriterionComboBoxActivated(int index) {
 }
 
 void MainWindow::connectActions() {
+  connect(ui_->refreshButton, &QAbstractButton::clicked, this,
+          &MainWindow::onRefreshButtonClicked);
   connect(ui_->addButton, &QAbstractButton::clicked, this,
           &MainWindow::onAddButtonClicked);
   connect(ui_->removeButton, &QAbstractButton::clicked, this,
@@ -183,8 +212,7 @@ void MainWindow::connectActions() {
 }
 
 void MainWindow::setupTable() {
-  tableData_ = new TableData(QVector<QString>{"Автор", "Тема", "Фраза"},
-                             QVector<int>{1, 2});
+  tableData_ = new TableData(QVector<QString>{"Автор", "Тема", "Фраза"});
   ui_->mainTableView->horizontalHeader()->setSectionResizeMode(
       QHeaderView::ResizeToContents);
   ui_->mainTableView->verticalHeader()->hide();

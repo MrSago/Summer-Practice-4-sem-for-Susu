@@ -121,9 +121,9 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>40</y>
+      <y>0</y>
       <width>51</width>
-      <height>191</height>
+      <height>231</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -136,14 +136,17 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>0</y>
+       <y>40</y>
        <width>32</width>
        <height>32</height>
       </rect>
      </property>
+     <property name="toolTip">
+      <string>Добавить</string>
+     </property>
      <property name="icon">
       <iconset resource="resources.qrc">
-       <normaloff>:/Resources/add-square.png</normaloff>:/Resources/add-square.png</iconset>
+       <normaloff>:/Resources/add-square-icon.png</normaloff>:/Resources/add-square-icon.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -156,14 +159,17 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>40</y>
+       <y>80</y>
        <width>32</width>
        <height>32</height>
       </rect>
      </property>
+     <property name="toolTip">
+      <string>Удалить</string>
+     </property>
      <property name="icon">
       <iconset resource="resources.qrc">
-       <normaloff>:/Resources/rubbish-bin.png</normaloff>:/Resources/rubbish-bin.png</iconset>
+       <normaloff>:/Resources/rubbish-bin-icon.png</normaloff>:/Resources/rubbish-bin-icon.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -176,14 +182,17 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>80</y>
+       <y>120</y>
        <width>32</width>
        <height>32</height>
       </rect>
      </property>
+     <property name="toolTip">
+      <string>Редактировать</string>
+     </property>
      <property name="icon">
       <iconset resource="resources.qrc">
-       <normaloff>:/Resources/edit.png</normaloff>:/Resources/edit.png</iconset>
+       <normaloff>:/Resources/edit-icon.png</normaloff>:/Resources/edit-icon.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -196,14 +205,17 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>120</y>
+       <y>160</y>
        <width>32</width>
        <height>32</height>
       </rect>
      </property>
+     <property name="toolTip">
+      <string>Скопировать</string>
+     </property>
      <property name="icon">
       <iconset resource="resources.qrc">
-       <normaloff>:/Resources/copy.png</normaloff>:/Resources/copy.png</iconset>
+       <normaloff>:/Resources/copy-icon.png</normaloff>:/Resources/copy-icon.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -216,10 +228,13 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>160</y>
+       <y>200</y>
        <width>31</width>
        <height>31</height>
       </rect>
+     </property>
+     <property name="toolTip">
+      <string>Очистить</string>
      </property>
      <property name="text">
       <string/>
@@ -227,6 +242,32 @@
      <property name="icon">
       <iconset resource="resources.qrc">
        <normaloff>:/Resources/clear-icon.jpg</normaloff>:/Resources/clear-icon.jpg</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>26</width>
+       <height>26</height>
+      </size>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="refreshButton">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>0</y>
+       <width>31</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>Обновить</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="resources.qrc">
+       <normaloff>:/Resources/refresh-icon.png</normaloff>:/Resources/refresh-icon.png</iconset>
      </property>
      <property name="iconSize">
       <size>
@@ -263,11 +304,6 @@
    <addaction name="fileMenu"/>
    <addaction name="helpMenu"/>
   </widget>
-  <action name="actionOpenFile">
-   <property name="text">
-    <string>Открыть файл</string>
-   </property>
-  </action>
   <action name="actionHelp">
    <property name="text">
     <string>Элементы управления</string>
@@ -275,17 +311,7 @@
   </action>
   <action name="actionAbout">
    <property name="text">
-    <string>Об авторе</string>
-   </property>
-  </action>
-  <action name="actionSaveFile">
-   <property name="text">
-    <string>Сохранить файл</string>
-   </property>
-  </action>
-  <action name="actionSaveAsFile">
-   <property name="text">
-    <string>Сохранить файл как</string>
+    <string>О программе</string>
    </property>
   </action>
   <action name="actionSave">

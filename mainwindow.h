@@ -20,6 +20,7 @@ class MainWindow : public QMainWindow {
   ~MainWindow();
 
  private slots:
+  void onRefreshButtonClicked();
   void onAddButtonClicked();
   void onRemoveButtonClicked();
   void onEditButtonClicked();
@@ -45,5 +46,6 @@ class MainWindow : public QMainWindow {
   void initCompleter();
 
   void buttonMessageBox(const QString& reason);
+  QAbstractItemModel* makeSearchTable();
 };
 #endif  // MAINWINDOW_H

@@ -27,7 +27,7 @@ void EditItemDialog::connectButtons() {
 }
 
 void EditItemDialog::setEditTexts(QVector<QString>& items) {
-  ui_->authorLineEdit->setText(items[0]);
-  ui_->themeLineEdit->setText(items[1]);
-  ui_->phraseTextEdit->setText(items[2]);
+  ui_->authorLineEdit->setText(items[1]);
+  ui_->themeLineEdit->setText(items[2]);
+  ui_->phraseTextEdit->setText(items[3]);
 }

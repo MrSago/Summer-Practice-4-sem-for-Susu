@@ -8,30 +8,33 @@
 
 class TableData {
  public:
-  TableData(const QVector<QString>& column_headers,
-            const QVector<int>& search_criterions);
+  TableData(const QVector<QString>& column_headers);
   ~TableData();
 
   QAbstractItemModel* getModel() const { return model_; }
-  void addRow(QVector<QString>& columns);
-  bool removeRow(int row);
-  QVector<QString> getRowData(int row);
-  void editRow(QVector<QString>& columns, int row);
+  bool addRow(const QVector<QString>& columns);
+  bool removeRow(int id);
+  QVector<QString> getRowData(int id);
+  void editRow(const QVector<QString>& columns, int id);
 
   bool saveToJson(const QString& path);
   QAbstractItemModel* loadFromJson(const QString& path);
 
-  QAbstractItemModel* resetModel();
-  QAbstractItemModel* search(const QString& str);
+  QAbstractItemModel* clearModel();
+  QAbstractItemModel* search(const QString& criterion, const QString& str);
 
  private:
-  QVector<QString> headers_;
   QAbstractItemModel* model_;
-  // QAbstractItemModel* const sourceModel_;
-  QMap<int, PrefixSearcher*> criterionSearch_;
+  QAbstractItemModel* savedModel_;
+  QVector<QString> headers_;
+
+  QHash<QString, PrefixSearcher*> criterionSearch_;
 
   void initHeaders();
+  void initSearcher();
+  void clearSearcher();
   int lastID();
+  int findRow(int id);
 };
 
 #endif  // TABLEMODEL_H

@@ -45,7 +45,7 @@ void MainWindow::onAddButtonClicked() {
     QVector<QString> data = {dialog.getAuthor(), dialog.getTheme(),
                              dialog.getPhrase()};
     tableData_->addRow(data);
-    onSearchButtonClicked();
+    refreshTable();
     statusBar()->showMessage("Запись успешно добавлена в таблицу");
   }
 }
@@ -60,7 +60,7 @@ void MainWindow::onRemoveButtonClicked() {
 
   int id = selected_rows.first().data().toInt();
   tableData_->removeRow(id);
-  onSearchButtonClicked();
+  refreshTable();
   statusBar()->showMessage("Запись успешно удалена");
 }
 
@@ -81,7 +81,7 @@ void MainWindow::onEditButtonClicked() {
     QVector<QString> data = {dialog.getAuthor(), dialog.getTheme(),
                              dialog.getPhrase()};
     tableData_->editRow(data, id);
-    onSearchButtonClicked();
+    refreshTable();
     statusBar()->showMessage("Запись в таблице успешно изменена");
   }
 }
@@ -119,22 +119,7 @@ void MainWindow::onClearButtonClicked() {
   }
 }
 
-void MainWindow::onSearchButtonClicked() {
-  QAbstractItemModel* ui_model = ui_->mainTableView->model();
-  if (ui_model != tableData_->getModel() && ui_model != nullptr) {
-    delete ui_model;
-  }
-
-  QString criterion = ui_->criterionComboBox->currentText();
-  QString search_string = ui_->searchLineEdit->text();
-  if (search_string.isNull() || search_string.isEmpty()) {
-    ui_->mainTableView->setModel(tableData_->getModel());
-    return;
-  }
-
-  QAbstractItemModel* model = tableData_->search(criterion, search_string);
-  ui_->mainTableView->setModel(model);
-}
+void MainWindow::onSearchButtonClicked() { refreshTable(); }
 
 void MainWindow::onSaveFileClicked() {
   QString path = QFileDialog::getSaveFileName(this, "Сохранить файл", "",
@@ -232,4 +217,21 @@ void MainWindow::buttonMessageBox(const QString& text) {
   msg_box.setIcon(QMessageBox::Information);
   msg_box.setText(text);
   msg_box.exec();
+}
+
+void MainWindow::refreshTable() {
+  QAbstractItemModel* ui_model = ui_->mainTableView->model();
+  if (ui_model != tableData_->getModel() && ui_model != nullptr) {
+    delete ui_model;
+  }
+
+  QString criterion = ui_->criterionComboBox->currentText();
+  QString search_string = ui_->searchLineEdit->text();
+  if (search_string.isNull() || search_string.isEmpty()) {
+    ui_->mainTableView->setModel(tableData_->getModel());
+    return;
+  }
+
+  QAbstractItemModel* model = tableData_->search(criterion, search_string);
+  ui_->mainTableView->setModel(model);
 }

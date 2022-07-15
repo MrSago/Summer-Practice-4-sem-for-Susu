@@ -46,6 +46,6 @@ class MainWindow : public QMainWindow {
   void initCompleter();
 
   void buttonMessageBox(const QString& reason);
-  QAbstractItemModel* makeSearchTable();
+  void refreshTable();
 };
 #endif  // MAINWINDOW_H

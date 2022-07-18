@@ -7,6 +7,9 @@ namespace Ui {
 class AboutWindow;
 }
 
+/**
+ * @brief Класс окна с информацией о приложении и разработчике
+ */
 class AboutWindow : public QDialog {
   Q_OBJECT
 

@@ -7,6 +7,9 @@ namespace Ui {
 class HelpWindow;
 }
 
+/**
+ * @brief Класс окна с подсказками о приложении
+ */
 class HelpWindow : public QDialog {
   Q_OBJECT
 

@@ -1,4 +1,3 @@
-
 #include "tabledata.h"
 
 #include <QFile>

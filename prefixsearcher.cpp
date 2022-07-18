@@ -1,17 +1,15 @@
-
 #include "prefixsearcher.h"
 
 void PrefixSearcher::insert(const QString& str, int input_id) {
   int vertice = 0;
   for (QChar sym : str) {
-    sym = sym.toLower();
     if (!canGoNode(vertice, sym)) {
       createNode(vertice, sym);
     }
     vertice = getNextVertice(vertice, sym);
   }
-  trie_[vertice].isLeaf = true;
   trie_[vertice].ids.push_back(input_id);
+  trie_[vertice].isLeaf = trie_[vertice].ids.size();
 }
 
 void PrefixSearcher::erase(const QString& str, int erase_id) {
@@ -34,7 +32,6 @@ void PrefixSearcher::erase(const QString& str, int erase_id) {
 QVector<int> PrefixSearcher::find(const QString& prefix) {
   int vertice = 0;
   for (QChar sym : prefix) {
-    sym = sym.toLower();
     if (!canGoNode(vertice, sym)) {
       return QVector<int>();
     }
@@ -42,6 +39,7 @@ QVector<int> PrefixSearcher::find(const QString& prefix) {
   }
   QVector<int> result;
   depthFirstSearch(result, vertice);
+  std::sort(result.begin(), result.end());
   return result;
 }
 

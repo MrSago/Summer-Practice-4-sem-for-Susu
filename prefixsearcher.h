@@ -1,4 +1,3 @@
-
 #ifndef PREFIXSEARCHER_H
 #define PREFIXSEARCHER_H
 

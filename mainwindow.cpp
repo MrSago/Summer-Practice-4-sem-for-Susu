@@ -31,7 +31,9 @@ void MainWindow::onRefreshButtonClicked() {
   if (ui_model != tableData_->getModel() && ui_model != nullptr) {
     delete ui_model;
   }
-  ui_->mainTableView->setModel(tableData_->getModel());
+  QAbstractItemModel* model = tableData_->getModel();
+  ui_->mainTableView->setModel(model);
+  compl_->setModel(model);
   ui_->criterionComboBox->setCurrentIndex(0);
   ui_->searchLineEdit->clear();
   statusBar()->showMessage("Таблица обновлена");
@@ -117,6 +119,8 @@ void MainWindow::onClearButtonClicked() {
   } else {
     statusBar()->showMessage("Ошибка очистки таблицы");
   }
+  ui_->criterionComboBox->setCurrentIndex(0);
+  ui_->searchLineEdit->clear();
 }
 
 void MainWindow::onSearchButtonClicked() { refreshTable(); }
@@ -228,10 +232,13 @@ void MainWindow::refreshTable() {
   QString criterion = ui_->criterionComboBox->currentText();
   QString search_string = ui_->searchLineEdit->text();
   if (search_string.isNull() || search_string.isEmpty()) {
-    ui_->mainTableView->setModel(tableData_->getModel());
+    QAbstractItemModel* model = tableData_->getModel();
+    ui_->mainTableView->setModel(model);
+    compl_->setModel(model);
     return;
   }
 
   QAbstractItemModel* model = tableData_->search(criterion, search_string);
   ui_->mainTableView->setModel(model);
+  compl_->setModel(model);
 }
